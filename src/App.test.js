@@ -15,7 +15,8 @@ test('App should render', () => {
 
 test('Button should render', () => {
   // TODO: change the expect to actually test something 😉
-  expect('no test written').toBe('tested');
+  render(<button />);
+  expect(screen.getByRole('button')).toBeInTheDocument();
 });
 
 /**
@@ -24,7 +25,11 @@ test('Button should render', () => {
  */
 test('theme button should update button text', () => {
   // TODO: change the expect to actually test something 😉
-  expect('no test written').toBe('tested');
+  render(<App />);
+  const themeButton = screen.getByText(/current theme:/i);
+  expect(themeButton).toHaveTextContent(/current theme:\s*light/i);
+  fireEvent.click(themeButton);
+  expect(themeButton).toHaveTextContent(/current theme:\s*dark/i);
 });
 
 // BONUS
@@ -32,7 +37,13 @@ test('theme button should update button text', () => {
 // e.g.: expect(element).toHaveStyle('color: #FFF');
 test('theme button should toggle styles', () => {
   // TODO: change the expect to actually test something 😉
-  expect('no test written').toBe('tested');
+  render(<App />);
+  const themeButton = screen.getByText(/current theme:/i);
+  expect(document.body).toHaveStyle('background-color: rgb(255, 255, 255)');
+  fireEvent.click(themeButton);
+  expect(document.body).toHaveStyle('background-color: rgb(51, 51, 51)');
+  fireEvent.click(themeButton);
+  expect(document.body).toHaveStyle('background-color: rgb(255, 255, 255)');
 });
 
 /**
@@ -46,7 +57,16 @@ test('theme button should toggle styles', () => {
  */
 test('hidden button should toggle hidden content', () => {
   // TODO: change the expect to actually test something 😉
-  expect('no test written').toBe('tested');
+  render(<App />);
+  const toggleButton = screen.getByText(/hidden content/i);
+  let hiddenContent = screen.queryByText(/this content is hidden by default/i);
+  expect(hiddenContent).toBeNull();
+  fireEvent.click(toggleButton);
+  hiddenContent = screen.queryByText(/hidden content/i);
+  expect(hiddenContent).toBeInTheDocument();
+  fireEvent.click(toggleButton);
+  hiddenContent = screen.queryByText(/this content is hidden by default/i);
+  expect(hiddenContent).toBeNull();
 });
 
 
